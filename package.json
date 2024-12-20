@@ -1,0 +1,31 @@
+{
+  "name": "gerador_script_update",
+  "version": "1.0.0",
+  "description": "Gerador Script SQL",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-packager": "^17.1.2"
+  },
+  "build": {
+    "appId": "GERADOR_SCRIPT_UPDATE",
+    "productName": "Gerador Script Update",
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "icon": "icon.ico"
+    }
+  },
+  "dependencies": {
+    "gerador_script_update": "file:"
+  }
+}

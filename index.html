@@ -375,6 +375,9 @@
         <label for="fieldCondition">Campo para WHERE (separe por vírgulas):</label>
         <input type="text" id="fieldCondition" placeholder="Ex: COD_LOJA, INATIVO">
 
+        <label>Commit a cada:</label>
+        <input type="text" id="commitInterval" placeholder="Ex: 100" value="100" oninput="validarNumero()">
+
         <span id="lineCount" class="line-count"></span>
         <div class="file-upload">
             <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="updateFileName()">
@@ -393,7 +396,8 @@
                 <li>O arquivo deve ser separado por ponto e vírgula ";".</li>
                 <li>A primeira linha deve conter os cabeçalhos das colunas.</li>
                 <p></p>
-                <img src="assets/imagem_exemplo2.jpg" alt="Exemplo2" class="exemploImage" onclick="openImageModal(this)">
+                <img src="assets/imagem_exemplo2.jpg" alt="Exemplo2" class="exemploImage"
+                    onclick="openImageModal(this)">
 
                 <div id="imageModal" class="modal" onclick="closeImageModal()">
                     <img id="modalImage" class="modal-content" />
@@ -416,14 +420,19 @@
     </div>
 
     <script>
+        function validarNumero() {
+            const input = document.getElementById('commitInterval');
+            if (input.value > 999999) {
+                input.value = 999999;
+            }
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
+
+
         function openImageModal(imageElement) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
-
-            // Define o src da imagem do modal como o src da imagem clicada
             modalImage.src = imageElement.src;
-
-            // Exibe o modal
             modal.style.display = 'flex';
         }
 
@@ -436,18 +445,14 @@
             const helpButton = document.getElementById('helpButton');
             const helpBalloon = document.getElementById('helpBalloon');
             const closeHelpBalloon = document.getElementById('closeHelpBalloon');
-
-            // Exibir o balão de ajuda
             helpButton.addEventListener('click', () => {
                 helpBalloon.style.display = 'block';
             });
 
-            // Fechar o balão de ajuda
             closeHelpBalloon.addEventListener('click', () => {
                 helpBalloon.style.display = 'none';
             });
 
-            // Fechar o balão ao clicar fora dele
             window.addEventListener('click', (event) => {
                 if (event.target === helpBalloon) {
                     helpBalloon.style.display = 'none';
@@ -485,6 +490,7 @@
             const fieldsToSet = document.getElementById('fieldsToSet').value.trim();
             const fieldCondition = document.getElementById('fieldCondition').value.trim();
             const tableName = document.getElementById('tableName').value.trim();
+            const commitInterval = parseInt(document.getElementById('commitInterval').value.trim());
 
             if (!fieldsToSet || !fieldCondition || !tableName) {
                 alert('Por favor, preencha todos os campos.');
@@ -496,7 +502,7 @@
                 alert('Por favor, selecione um arquivo CSV.');
                 return;
             }
-
+            let countCommit = 0;
             const reader = new FileReader();
             reader.onload = function (event) {
                 const contents = event.target.result;
@@ -555,6 +561,12 @@
                     script += `UPDATE ${tableName}\n`;
                     script += `SET ${setClauses}\n`;
                     script += `WHERE ${conditionClauses};\n\n`;
+                    countCommit++
+                    if (countCommit === commitInterval) {
+                        script += `COMMIT WORK;\n\n`;
+                        countCommit = 0;
+                    }
+
                 });
 
                 document.getElementById('sqlScript').value = script;

@@ -6,7 +6,7 @@ Este é um programa desenvolvido com Electron e HTML/JavaScript para gerar scrip
 
 - **Upload de arquivo CSV**: Permite o upload de arquivos CSV com dados estruturados.
 - **Campos para `SET`**: Os campos para a cláusula `SET` podem ser definidos dinamicamente pelo usuário.
-- **Campos para `WHERE`**: Os campos para a cláusula `SET` podem ser definidos dinamicamente pelo usuário.
+- **Campos para `WHERE`**: Os campos para a cláusula `WHERE` podem ser definidos dinamicamente pelo usuário.
 - **Saída em formato SQL**: Gera o script SQL que pode ser usado diretamente no banco de dados.
 - **Exportação de script**: Permite salvar o script gerado em um arquivo `.sql` para uso posterior.
 
